@@ -48,6 +48,10 @@ const sampleCategories: Category[] = [
       { id: "10", title: "KFC", url: "https://kfc.com", domain: "kfc.com", visits: 12, lastVisited: "1 week ago" },
       { id: "11", title: "Pizza Hut", url: "https://pizzahut.com", domain: "pizzahut.com", visits: 8, lastVisited: "2 weeks ago" },
       { id: "19", title: "Starbucks", url: "https://starbucks.com", domain: "starbucks.com", visits: 67, lastVisited: "1 hour ago", isFavorite: true },
+      { id: "26", title: "Burger King", url: "https://burgerking.com", domain: "burgerking.com", visits: 15, lastVisited: "4 days ago" },
+      { id: "27", title: "Subway", url: "https://subway.com", domain: "subway.com", visits: 22, lastVisited: "5 days ago" },
+      { id: "28", title: "Taco Bell", url: "https://tacobell.com", domain: "tacobell.com", visits: 19, lastVisited: "1 week ago" },
+      { id: "29", title: "Chipotle", url: "https://chipotle.com", domain: "chipotle.com", visits: 31, lastVisited: "3 days ago", isFavorite: true },
     ],
   },
   {
@@ -59,6 +63,11 @@ const sampleCategories: Category[] = [
       { id: "4", title: "YouTube", url: "https://youtube.com", domain: "youtube.com", visits: 289, lastVisited: "1 hour ago", isFavorite: true },
       { id: "20", title: "Spotify", url: "https://spotify.com", domain: "spotify.com", visits: 78, lastVisited: "2 hours ago", isFavorite: true },
       { id: "21", title: "Disney+", url: "https://disneyplus.com", domain: "disneyplus.com", visits: 34, lastVisited: "1 day ago" },
+      { id: "30", title: "Hulu", url: "https://hulu.com", domain: "hulu.com", visits: 25, lastVisited: "2 days ago" },
+      { id: "31", title: "Amazon Prime", url: "https://primevideo.com", domain: "primevideo.com", visits: 41, lastVisited: "1 day ago" },
+      { id: "32", title: "HBO Max", url: "https://hbomax.com", domain: "hbomax.com", visits: 18, lastVisited: "3 days ago" },
+      { id: "33", title: "Apple Music", url: "https://music.apple.com", domain: "music.apple.com", visits: 29, lastVisited: "2 days ago" },
+      { id: "34", title: "Twitch", url: "https://twitch.tv", domain: "twitch.tv", visits: 52, lastVisited: "1 hour ago", isFavorite: true },
     ],
   },
   {
@@ -70,6 +79,9 @@ const sampleCategories: Category[] = [
       { id: "6", title: "Zara", url: "https://zara.com", domain: "zara.com", visits: 28, lastVisited: "2 days ago" },
       { id: "22", title: "Nike", url: "https://nike.com", domain: "nike.com", visits: 19, lastVisited: "5 days ago" },
       { id: "23", title: "eBay", url: "https://ebay.com", domain: "ebay.com", visits: 42, lastVisited: "1 week ago" },
+      { id: "35", title: "Target", url: "https://target.com", domain: "target.com", visits: 33, lastVisited: "3 days ago" },
+      { id: "36", title: "Walmart", url: "https://walmart.com", domain: "walmart.com", visits: 27, lastVisited: "4 days ago" },
+      { id: "37", title: "Best Buy", url: "https://bestbuy.com", domain: "bestbuy.com", visits: 21, lastVisited: "1 week ago" },
     ],
   },
   {
@@ -81,6 +93,10 @@ const sampleCategories: Category[] = [
       { id: "8", title: "Epic Games", url: "https://epicgames.com", domain: "epicgames.com", visits: 45, lastVisited: "1 day ago" },
       { id: "24", title: "Nintendo", url: "https://nintendo.com", domain: "nintendo.com", visits: 23, lastVisited: "3 days ago" },
       { id: "25", title: "PlayStation", url: "https://playstation.com", domain: "playstation.com", visits: 31, lastVisited: "1 week ago" },
+      { id: "38", title: "Xbox", url: "https://xbox.com", domain: "xbox.com", visits: 28, lastVisited: "2 days ago" },
+      { id: "39", title: "GOG", url: "https://gog.com", domain: "gog.com", visits: 16, lastVisited: "1 week ago" },
+      { id: "40", title: "Ubisoft", url: "https://ubisoft.com", domain: "ubisoft.com", visits: 14, lastVisited: "5 days ago" },
+      { id: "41", title: "EA Games", url: "https://ea.com", domain: "ea.com", visits: 20, lastVisited: "4 days ago" },
     ],
   },
 ];
