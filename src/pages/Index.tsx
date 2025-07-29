@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Card } from "@/components/ui/card";
 import AddLinkInput from "@/components/AddLinkInput";
@@ -14,57 +14,52 @@ interface Link {
 interface Category {
   id: string;
   title: string;
-  emoji: string;
+  icon: string;
   links: Link[];
+}
+
+interface ApiCategory {
+  id: number;
+  name: string;
+  icon: string;
 }
 
 const Index = () => {
   const { toast } = useToast();
-  const [selectedCategory, setSelectedCategory] = useState("food");
+  const [selectedCategory, setSelectedCategory] = useState("1");
   const [selectedLink, setSelectedLink] = useState<string | null>(null);
-  
-  const [categories, setCategories] = useState<Category[]>([
-    {
-      id: "food",
-      title: "Food",
-      emoji: "🌯",
-      links: [
-        { id: "1", title: "Joe's Pizza", url: "https://joespizzanyc.com", domain: "joespizzanyc.com" },
-        { id: "2", title: "McDonald's", url: "https://mcdonalds.com", domain: "mcdonalds.com" },
-        { id: "15", title: "Starbucks", url: "https://starbucks.com", domain: "starbucks.com" },
-      ],
-    },
-    {
-      id: "bands",
-      title: "Bands",
-      emoji: "🎸",
-      links: [
-        { id: "3", title: "Metallica", url: "https://metallica.com", domain: "metallica.com" },
-        { id: "4", title: "Coldplay", url: "https://coldplay.com", domain: "coldplay.com" },
-        { id: "16", title: "The Beatles", url: "https://thebeatles.com", domain: "thebeatles.com" },
-      ],
-    },
-    {
-      id: "shops",
-      title: "Shops",
-      emoji: "🛍️",
-      links: [
-        { id: "5", title: "Amazon", url: "https://amazon.com", domain: "amazon.com" },
-        { id: "6", title: "Zara", url: "https://zara.com", domain: "zara.com" },
-        { id: "17", title: "Nike", url: "https://nike.com", domain: "nike.com" },
-      ],
-    },
-    {
-      id: "games",
-      title: "Games",
-      emoji: "🎮",
-      links: [
-        { id: "7", title: "Steam", url: "https://steampowered.com", domain: "steampowered.com" },
-        { id: "8", title: "Epic Games", url: "https://epicgames.com", domain: "epicgames.com" },
-        { id: "18", title: "Nintendo", url: "https://nintendo.com", domain: "nintendo.com" },
-      ],
-    },
-  ]);
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('https://h5.trade-x-pro.com/api/cat.php');
+        const data = await response.json();
+        
+        if (data.success) {
+          const formattedCategories: Category[] = data.data.map((cat: ApiCategory) => ({
+            id: cat.id.toString(),
+            title: cat.name,
+            icon: cat.icon,
+            links: []
+          }));
+          setCategories(formattedCategories);
+          if (formattedCategories.length > 0) {
+            setSelectedCategory(formattedCategories[0].id);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch categories:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load categories",
+          variant: "destructive",
+        });
+      }
+    };
+
+    fetchCategories();
+  }, [toast]);
 
   const extractDomain = (url: string): string => {
     try {
@@ -141,7 +136,7 @@ const Index = () => {
                 <CategorySection
                   key={category.id}
                   title={category.title}
-                  emoji={category.emoji}
+                  emoji={category.icon}
                   categoryId={category.id}
                   links={category.links}
                   selectedCategory={selectedCategory}

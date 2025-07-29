@@ -41,7 +41,7 @@ export default function CategorySection({
         )}
         onClick={() => onCategorySelect(categoryId)}
       >
-        <CategoryIcon category={categoryId as any} size="md" />
+        <CategoryIcon imageUrl={emoji} categoryName={title} size="md" />
         {title}
       </h2>
       <div className="mt-3">
