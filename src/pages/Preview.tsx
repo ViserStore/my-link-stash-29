@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -12,7 +13,8 @@ import {
   Heart, 
   ExternalLink,
   TrendingUp,
-  Clock
+  Clock,
+  ChevronRight
 } from "lucide-react";
 import CategoryIcon from "@/components/CategoryIcon";
 
@@ -244,7 +246,7 @@ export default function Preview() {
                 </div>
 
                 <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                  {category.links.map((link, index) => (
+                  {category.links.slice(0, 6).map((link, index) => (
                     <Card 
                       key={link.id} 
                       className="p-3 sm:p-4 hover-lift transition-smooth animate-scale-in card-glow group"
@@ -296,6 +298,21 @@ export default function Preview() {
                     </Card>
                   ))}
                 </div>
+
+                {/* View More Button */}
+                {category.links.length > 6 && (
+                  <div className="mt-6 text-center">
+                    <Link to={`/category/${category.id}`}>
+                      <Button 
+                        variant="outline" 
+                        className="group hover:bg-primary hover:text-primary-foreground transition-smooth"
+                      >
+                        View More ({category.links.length - 6} more)
+                        <ChevronRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </Button>
+                    </Link>
+                  </div>
+                )}
               </div>
             ))}
           </div>
