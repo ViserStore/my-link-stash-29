@@ -3,12 +3,11 @@ import {
   Home, 
   Eye, 
   Plus, 
-  Bookmark, 
-  Settings, 
   Star,
+  Settings, 
+  Globe,
   ChevronDown,
   ChevronRight,
-  Globe,
   Sparkles
 } from "lucide-react";
 import CategoryIcon from "@/components/CategoryIcon";
@@ -54,51 +53,54 @@ export function AppSidebar() {
     return currentPath.startsWith(path);
   };
 
-  const getNavCls = (path: string) => {
-    const active = isActive(path);
-    return `flex items-center w-full px-3 py-2.5 rounded-xl transition-all duration-200 ${
-      active 
-        ? "bg-primary text-primary-foreground shadow-md font-semibold" 
-        : "text-foreground hover:bg-accent hover:text-accent-foreground hover:shadow-sm"
-    }`;
-  };
-
   return (
-    <Sidebar className={`${collapsed ? "w-16" : "w-72"} transition-all duration-300 bg-background border-r border-border`}>
-      <SidebarHeader className="p-6 border-b border-border">
+    <Sidebar className={`${collapsed ? "w-16" : "w-80"} bg-white border-r border-gray-200 transition-all duration-300`}>
+      {/* Header */}
+      <SidebarHeader className="p-6 bg-gradient-to-r from-green-500 to-blue-500">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg">
-            <Globe className="w-5 h-5 text-white" />
+          <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center">
+            <Globe className="w-6 h-6 text-white" />
           </div>
           {!collapsed && (
-            <div className="flex-1">
-              <h1 className="text-xl font-bold text-foreground">Link Hub</h1>
-              <p className="text-sm text-muted-foreground">Organize & Share</p>
+            <div>
+              <h1 className="text-xl font-bold text-white">Link Hub</h1>
+              <p className="text-sm text-white/80">Organize & Share</p>
             </div>
           )}
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="px-4 py-6 space-y-6">
+      {/* Content */}
+      <SidebarContent className="p-6 bg-white">
         {/* Main Navigation */}
-        <SidebarGroup>
+        <SidebarGroup className="mb-8">
           {!collapsed && (
-            <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-              Navigation
+            <SidebarGroupLabel className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4 px-3">
+              Main Menu
             </SidebarGroupLabel>
           )}
           <SidebarGroupContent>
             <SidebarMenu className="space-y-2">
-              {mainItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild className="p-0">
-                    <NavLink to={item.url} className={getNavCls(item.url)}>
-                      <item.icon className="w-5 h-5 flex-shrink-0" />
-                      {!collapsed && <span className="ml-3 truncate">{item.title}</span>}
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {mainItems.map((item) => {
+                const active = isActive(item.url);
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                      <NavLink 
+                        to={item.url} 
+                        className={`flex items-center w-full px-4 py-3 rounded-2xl transition-all duration-200 ${
+                          active 
+                            ? "bg-gradient-to-r from-green-500 to-blue-500 text-white shadow-lg transform scale-105" 
+                            : "text-gray-700 hover:bg-gray-100 hover:transform hover:scale-105"
+                        }`}
+                      >
+                        <item.icon className="w-5 h-5 flex-shrink-0" />
+                        {!collapsed && <span className="ml-4 font-semibold">{item.title}</span>}
+                      </NavLink>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -106,16 +108,16 @@ export function AppSidebar() {
         {/* Categories */}
         <SidebarGroup>
           {!collapsed && (
-            <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+            <SidebarGroupLabel className="px-3 mb-4">
               <button
                 onClick={() => setCategoriesExpanded(!categoriesExpanded)}
-                className="flex items-center gap-2 w-full hover:text-foreground transition-colors"
+                className="flex items-center justify-between w-full text-xs font-bold text-gray-500 uppercase tracking-wider hover:text-gray-700 transition-colors"
               >
                 <span>Categories</span>
                 {categoriesExpanded ? (
-                  <ChevronDown className="w-3 h-3" />
+                  <ChevronDown className="w-4 h-4" />
                 ) : (
-                  <ChevronRight className="w-3 h-3" />
+                  <ChevronRight className="w-4 h-4" />
                 )}
               </button>
             </SidebarGroupLabel>
@@ -123,49 +125,71 @@ export function AppSidebar() {
           {(collapsed || categoriesExpanded) && (
             <SidebarGroupContent>
               <SidebarMenu className="space-y-2">
-                {categoryItems.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild className="p-0">
-                      <NavLink to={item.url} className={getNavCls(item.url)}>
-                        <CategoryIcon category={item.categoryId as any} size="sm" className="flex-shrink-0" />
-                        {!collapsed && (
-                          <div className="flex-1 flex items-center justify-between ml-3 min-w-0">
-                            <span className="truncate">{item.title}</span>
-                            <span className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full font-medium ml-2">
-                              {item.count}
-                            </span>
-                          </div>
-                        )}
-                      </NavLink>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+                {categoryItems.map((item) => {
+                  const active = isActive(item.url);
+                  return (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton asChild>
+                        <NavLink 
+                          to={item.url} 
+                          className={`flex items-center w-full px-4 py-3 rounded-2xl transition-all duration-200 ${
+                            active 
+                              ? "bg-gradient-to-r from-green-500 to-blue-500 text-white shadow-lg transform scale-105" 
+                              : "text-gray-700 hover:bg-gray-100 hover:transform hover:scale-105"
+                          }`}
+                        >
+                          <CategoryIcon category={item.categoryId as any} size="sm" className="flex-shrink-0" />
+                          {!collapsed && (
+                            <div className="flex-1 flex items-center justify-between ml-4 min-w-0">
+                              <span className="font-semibold truncate">{item.title}</span>
+                              <span className={`text-xs px-2 py-1 rounded-full font-bold ml-3 ${
+                                active 
+                                  ? "bg-white/20 text-white" 
+                                  : "bg-yellow-400 text-gray-800"
+                              }`}>
+                                {item.count}
+                              </span>
+                            </div>
+                          )}
+                        </NavLink>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
               </SidebarMenu>
             </SidebarGroupContent>
           )}
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 border-t border-border">
-        <SidebarMenu>
+      {/* Footer */}
+      <SidebarFooter className="p-6 bg-white border-t border-gray-200">
+        <SidebarMenu className="mb-4">
           <SidebarMenuItem>
-            <SidebarMenuButton asChild className="p-0">
-              <NavLink to="/settings" className={getNavCls("/settings")}>
+            <SidebarMenuButton asChild>
+              <NavLink 
+                to="/settings" 
+                className={`flex items-center w-full px-4 py-3 rounded-2xl transition-all duration-200 ${
+                  isActive("/settings") 
+                    ? "bg-gradient-to-r from-green-500 to-blue-500 text-white shadow-lg transform scale-105" 
+                    : "text-gray-700 hover:bg-gray-100 hover:transform hover:scale-105"
+                }`}
+              >
                 <Settings className="w-5 h-5 flex-shrink-0" />
-                {!collapsed && <span className="ml-3">Settings</span>}
+                {!collapsed && <span className="ml-4 font-semibold">Settings</span>}
               </NavLink>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
         
         {!collapsed && (
-          <div className="mt-4 p-3 bg-accent/30 rounded-xl border border-accent/50">
+          <div className="bg-gradient-to-r from-yellow-400 to-orange-400 p-4 rounded-2xl">
             <div className="flex items-center gap-2 mb-2">
-              <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-foreground">Pro Tip</span>
+              <Sparkles className="w-5 h-5 text-gray-800" />
+              <span className="text-sm font-bold text-gray-800">Pro Tip!</span>
             </div>
-            <p className="text-xs text-muted-foreground">
-              Use Ctrl+K to quickly search your links
+            <p className="text-xs text-gray-800 font-medium">
+              Use Ctrl+K to quickly search through all your saved links
             </p>
           </div>
         )}
