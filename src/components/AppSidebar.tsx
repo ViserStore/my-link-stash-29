@@ -3,12 +3,12 @@ import {
   Home, 
   Eye, 
   Plus, 
-  Star,
+  Bookmark, 
   Settings, 
-  Globe,
-  ChevronDown,
-  ChevronRight,
-  Sparkles
+  Star,
+  TrendingUp,
+  Users,
+  Globe
 } from "lucide-react";
 import CategoryIcon from "@/components/CategoryIcon";
 import { NavLink, useLocation } from "react-router-dom";
@@ -46,153 +46,95 @@ export function AppSidebar() {
   const collapsed = state === "collapsed";
   const location = useLocation();
   const currentPath = location.pathname;
-  const [categoriesExpanded, setCategoriesExpanded] = useState(true);
 
   const isActive = (path: string) => {
     if (path === "/") return currentPath === "/";
     return currentPath.startsWith(path);
   };
 
+  const getNavCls = (path: string) => {
+    const active = isActive(path);
+    return active 
+      ? "bg-sidebar-accent text-primary font-semibold glow-border" 
+      : "hover:bg-sidebar-accent/50 transition-smooth";
+  };
+
   return (
-    <Sidebar className={`${collapsed ? "w-16" : "w-80"} bg-white border-r border-gray-200 transition-all duration-300`}>
-      {/* Header */}
-      <SidebarHeader className="p-6 bg-gradient-to-r from-green-500 to-blue-500">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center">
-            <Globe className="w-6 h-6 text-white" />
+    <Sidebar className={`${collapsed ? "w-14 sm:w-16" : "w-64 sm:w-72"} transition-all duration-300`}>
+      <SidebarHeader className="border-b border-sidebar-border p-3 sm:p-4">
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg gradient-primary flex items-center justify-center animate-glow">
+            <Globe className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
           </div>
           {!collapsed && (
             <div>
-              <h1 className="text-xl font-bold text-white">Link Hub</h1>
-              <p className="text-sm text-white/80">Organize & Share</p>
+              <h2 className="font-bold text-base sm:text-lg glow-text">Link Hub</h2>
+              <p className="text-xs text-sidebar-foreground/70">Organize & Share</p>
             </div>
           )}
         </div>
       </SidebarHeader>
 
-      {/* Content */}
-      <SidebarContent className="p-6 bg-white">
-        {/* Main Navigation */}
-        <SidebarGroup className="mb-8">
-          {!collapsed && (
-            <SidebarGroupLabel className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4 px-3">
-              Main Menu
-            </SidebarGroupLabel>
-          )}
+      <SidebarContent className="p-1 sm:p-2">
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-sidebar-foreground/70 font-semibold mb-2 text-xs sm:text-sm">
+            {!collapsed && "Main Navigation"}
+          </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-2">
-              {mainItems.map((item) => {
-                const active = isActive(item.url);
-                return (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <NavLink 
-                        to={item.url} 
-                        className={`flex items-center w-full px-4 py-3 rounded-2xl transition-all duration-200 ${
-                          active 
-                            ? "bg-gradient-to-r from-green-500 to-blue-500 text-white shadow-lg transform scale-105" 
-                            : "text-gray-700 hover:bg-gray-100 hover:transform hover:scale-105"
-                        }`}
-                      >
-                        <item.icon className="w-5 h-5 flex-shrink-0" />
-                        {!collapsed && <span className="ml-4 font-semibold">{item.title}</span>}
-                      </NavLink>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
+            <SidebarMenu className="space-y-1">
+              {mainItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild className="rounded-lg hover-glow">
+                    <NavLink to={item.url} className={getNavCls(item.url)}>
+                      <item.icon className="w-4 h-4 sm:w-5 sm:h-5" />
+                      {!collapsed && <span className="ml-2 sm:ml-3 text-sm sm:text-base">{item.title}</span>}
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Categories */}
-        <SidebarGroup>
-          {!collapsed && (
-            <SidebarGroupLabel className="px-3 mb-4">
-              <button
-                onClick={() => setCategoriesExpanded(!categoriesExpanded)}
-                className="flex items-center justify-between w-full text-xs font-bold text-gray-500 uppercase tracking-wider hover:text-gray-700 transition-colors"
-              >
-                <span>Categories</span>
-                {categoriesExpanded ? (
-                  <ChevronDown className="w-4 h-4" />
-                ) : (
-                  <ChevronRight className="w-4 h-4" />
-                )}
-              </button>
-            </SidebarGroupLabel>
-          )}
-          {(collapsed || categoriesExpanded) && (
-            <SidebarGroupContent>
-              <SidebarMenu className="space-y-2">
-                {categoryItems.map((item) => {
-                  const active = isActive(item.url);
-                  return (
-                    <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton asChild>
-                        <NavLink 
-                          to={item.url} 
-                          className={`flex items-center w-full px-4 py-3 rounded-2xl transition-all duration-200 ${
-                            active 
-                              ? "bg-gradient-to-r from-green-500 to-blue-500 text-white shadow-lg transform scale-105" 
-                              : "text-gray-700 hover:bg-gray-100 hover:transform hover:scale-105"
-                          }`}
-                        >
-                          <CategoryIcon category={item.categoryId as any} size="sm" className="flex-shrink-0" />
-                          {!collapsed && (
-                            <div className="flex-1 flex items-center justify-between ml-4 min-w-0">
-                              <span className="font-semibold truncate">{item.title}</span>
-                              <span className={`text-xs px-2 py-1 rounded-full font-bold ml-3 ${
-                                active 
-                                  ? "bg-white/20 text-white" 
-                                  : "bg-yellow-400 text-gray-800"
-                              }`}>
-                                {item.count}
-                              </span>
-                            </div>
-                          )}
-                        </NavLink>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  );
-                })}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          )}
+        <SidebarGroup className="mt-4 sm:mt-6">
+          <SidebarGroupLabel className="text-sidebar-foreground/70 font-semibold mb-2 text-xs sm:text-sm">
+            {!collapsed && "Categories"}
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu className="space-y-1">
+              {categoryItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild className="rounded-lg hover-glow">
+                    <NavLink to={item.url} className={getNavCls(item.url)}>
+                      <CategoryIcon category={item.categoryId as any} size="sm" />
+                      {!collapsed && (
+                        <div className="flex-1 flex items-center justify-between ml-2 sm:ml-3">
+                          <span className="text-sm sm:text-base">{item.title}</span>
+                          <span className="text-xs bg-primary/20 text-primary px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full">
+                            {item.count}
+                          </span>
+                        </div>
+                      )}
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
 
-      {/* Footer */}
-      <SidebarFooter className="p-6 bg-white border-t border-gray-200">
-        <SidebarMenu className="mb-4">
+      <SidebarFooter className="border-t border-sidebar-border p-3 sm:p-4">
+        <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <NavLink 
-                to="/settings" 
-                className={`flex items-center w-full px-4 py-3 rounded-2xl transition-all duration-200 ${
-                  isActive("/settings") 
-                    ? "bg-gradient-to-r from-green-500 to-blue-500 text-white shadow-lg transform scale-105" 
-                    : "text-gray-700 hover:bg-gray-100 hover:transform hover:scale-105"
-                }`}
-              >
-                <Settings className="w-5 h-5 flex-shrink-0" />
-                {!collapsed && <span className="ml-4 font-semibold">Settings</span>}
+            <SidebarMenuButton asChild className="rounded-lg hover-glow">
+              <NavLink to="/settings" className={getNavCls("/settings")}>
+                <Settings className="w-4 h-4 sm:w-5 sm:h-5" />
+                {!collapsed && <span className="ml-2 sm:ml-3 text-sm sm:text-base">Settings</span>}
               </NavLink>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-        
-        {!collapsed && (
-          <div className="bg-gradient-to-r from-yellow-400 to-orange-400 p-4 rounded-2xl">
-            <div className="flex items-center gap-2 mb-2">
-              <Sparkles className="w-5 h-5 text-gray-800" />
-              <span className="text-sm font-bold text-gray-800">Pro Tip!</span>
-            </div>
-            <p className="text-xs text-gray-800 font-medium">
-              Use Ctrl+K to quickly search through all your saved links
-            </p>
-          </div>
-        )}
       </SidebarFooter>
     </Sidebar>
   );
